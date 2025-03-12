@@ -3,10 +3,21 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 import os
 import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 
 # Initialize FastAPI
 app = FastAPI()
+
+# Allow requests from any frontend (change this for production)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change this to specific domains for security
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Load the embedding model
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
@@ -30,10 +41,10 @@ def get_answer(user_query):
         return "I'm sorry, I don't have an answer for that."
 
 # API endpoint for chatbot
-@app.get("/chatbot/")
-def chatbot(query: str):
-    answer = get_answer(query)
-    return {"query": query, "answer": answer}
+@app.post("/chatbot")
+async def chatbot(message: dict):
+    user_message = message.get("message", "")
+    return {"response": f"Echo: {user_message}"}
 
 @app.get("/")
 def read_root():
