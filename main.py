@@ -41,10 +41,10 @@ def get_answer(user_query):
         return "I'm sorry, I don't have an answer for that."
 
 # API endpoint for chatbot
-@app.post("/chatbot")
-async def chatbot(message: dict):
-    user_message = message.get("message", "")
-    return {"response": f"Echo: {user_message}"}
+@app.get("/chatbot/")
+def chatbot(query: str):
+    answer = get_answer(query)
+    return {"query": query, "answer": answer}
 
 @app.get("/")
 def read_root():
