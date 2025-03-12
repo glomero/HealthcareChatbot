@@ -136,7 +136,6 @@ python-jose==3.4.0
 python-multipart==0.0.20
 python-socketio==5.12.1
 pytz==2024.2
-pywin32==308
 PyYAML==6.0.2
 regex==2024.11.6
 requests==2.31.0
