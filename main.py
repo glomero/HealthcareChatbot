@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 import chromadb
 from sentence_transformers import SentenceTransformer
+import os
+import uvicorn
+
 
 # Initialize FastAPI
 app = FastAPI()
@@ -31,3 +34,12 @@ def get_answer(user_query):
 def chatbot(query: str):
     answer = get_answer(query)
     return {"query": query, "answer": answer}
+
+@app.get("/")
+def read_root():
+    return {"message": "Hello, Healthcare Chatbot is running!"}
+
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))  # Default to 8000 if PORT is not set
+    uvicorn.run(app, host="0.0.0.0", port=port)
